@@ -35,7 +35,7 @@ $ranges =[
 # Installation
 To install the app run the command.
 ```bash
-./make
+git clone git@github.com:wtorsi/fee-calculator.git && cd fee-calculator && ./make
 ``` 
 
 # Run
