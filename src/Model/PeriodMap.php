@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Model;
 
@@ -18,10 +20,7 @@ class PeriodMap
     public function get(int $term): FeeInterpolationTable
     {
         if (!isset($this->map[$term])) {
-            throw new OutOfBoundsException(\sprintf('Passed term value %d is not correct, possible values are %s',
-                $term,
-                \implode(',', \array_keys($this->map))
-            ));
+            throw new OutOfBoundsException(\sprintf('Passed term value %d is not correct, possible values are %s', $term, \implode(',', \array_keys($this->map))));
         }
 
         return $this->map[$term];

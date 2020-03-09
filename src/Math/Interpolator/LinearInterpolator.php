@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Math\Interpolator;
 
@@ -9,13 +11,12 @@ class LinearInterpolator implements InterpolatorInterface
     /**
      * fn(x) = kx + b
      * fn(x0) = y0
-     * fn(x1) = y1
-     * @param float $x
+     * fn(x1) = y1.
+     *
      * @param float $x0
      * @param float $y0
      * @param float $x1
      * @param float $y1
-     * @return float
      */
     public function interpolate(float $x, float ...$args): float
     {

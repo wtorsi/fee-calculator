@@ -21,14 +21,29 @@ class RangeCalculatorTest extends TestCase
             'ranges' => [
                 self::TEST_PERIOD => [
                     0 => 0,
-                    100 => 1,
-                    1000 => 100,
+                    100 => 100,
+                    1000 => 1000,
                 ],
             ],
         ]);
 
         $actual = $calculator->calculate(self::TEST_PERIOD, $amount);
         $this->assertEquals($expected, $actual);
+    }
+
+    public function testExactlyCalculate(): void
+    {
+        $calculator = new RangeCalculator([
+            'ranges' => [
+                self::TEST_PERIOD => [
+                    2000 => 90,
+                    3000 => 90,
+                ],
+            ],
+        ]);
+
+        $actual = $calculator->calculate(self::TEST_PERIOD, 2500);
+        $this->assertEquals(90, $actual);
     }
 
     public function testRangeUpException(): void
@@ -86,24 +101,18 @@ class RangeCalculatorTest extends TestCase
 
         $this->expectException(OutOfBoundsException::class);
         $calculator->calculate(self::TEST_PERIOD + 1, 100);
-
     }
 
     public function dataProvider(): array
     {
         return [
-            [50, (1 + .5) * 50],
-            [60, 95], // 1.6 * 60 = 96
-            [61, 100], // 1.61 * 61 = 98.21
-            [100, 200],
+            [50, 50],
+            [60, 60],
+            [61, 64],
+            [61.22, \round(125 - 61.22, 2)],
+            [61.223, \round(125 - 61.223, 2)],
             [0, 0],
-            [501, \call_user_func(function () { // 23100
-                $value = 501;
-                $fee = (100 - 1) * ($value - 100) / (1000 - 100) + 1;
-                $amount = ((1 + $fee) * $value);
-
-                return \round($amount / 5) * 5;
-            })],
+            [501, 1005 - 501],
         ];
     }
 }

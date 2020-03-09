@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Calculator;
 
@@ -25,7 +27,7 @@ class RangeCalculator implements FeeCalculatorInterface
         $this->options = $resolver->resolve($options);
     }
 
-    public function calculate(int $term, float $amount): int
+    public function calculate(int $term, float $amount): float
     {
         /** @var PeriodMap $map */
         $map = $this->options['ranges'];
@@ -37,8 +39,8 @@ class RangeCalculator implements FeeCalculatorInterface
     private function configure(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'interpolator' => fn(Options $options) => new LinearInterpolator(),
-            'normalizer' => fn(Options $options) => new DefaultNormalizer(),
+            'interpolator' => fn (Options $options) => new LinearInterpolator(),
+            'normalizer' => fn (Options $options) => new DefaultNormalizer(),
             'ranges' => [],
         ]);
 
@@ -61,7 +63,7 @@ class RangeCalculator implements FeeCalculatorInterface
         });
     }
 
-    private function doCalculate(FeeInterpolation $feeInterpolation, float $amount): int
+    private function doCalculate(FeeInterpolation $feeInterpolation, float $amount): float
     {
         /** @var InterpolatorInterface $interpolation */
         $interpolation = $this->options['interpolator'];
@@ -76,6 +78,6 @@ class RangeCalculator implements FeeCalculatorInterface
         /** @var NormalizerInterface $normalizer */
         $normalizer = $this->options['normalizer'];
 
-        return (int) $normalizer->normalize(($fee + 1) * $amount);
+        return $normalizer->normalize($fee, $amount);
     }
 }
