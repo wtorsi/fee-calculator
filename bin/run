@@ -1,0 +1,44 @@
+#!/usr/bin/env php
+<?php
+
+use Enum\Period;
+
+require \dirname(__DIR__).'/vendor/autoload.php';
+
+$calculator = new \Calculator\RangeCalculator([
+    'interpolator' => new \Math\Interpolator\LinearInterpolator(),
+    'normalizer' => new \Math\Normalizer\DefaultNormalizer(),
+    'ranges' => [
+        Period::ONE => [
+            1000 => .05,
+            2000 => .045,
+            3000 => .03,
+            4000 => .02875,
+            20000 => .02,
+        ],
+        Period::TWO => [
+            1000 => .07,
+            2000 => .05,
+            20000 => .04,
+        ],
+    ],
+]);
+
+$app = new Application($calculator);
+
+$run = function (int $term, float $amount) use ($app): void {
+    $response = $app->run($term, $amount);
+    \printf('For given term: %d and amount: %.2f, you will pay totally: %.2f. '."\n", $term, $amount, $response);
+};
+
+if (isset($argv[1]) && isset($argv[2])) {
+    $run($argv[1], $argv[2]);
+    exit;
+}
+
+$input = \fopen('php://stdin', 'r');
+while ($row = \fscanf($input, '%d %f')) {
+    [$term, $amount] = $row;
+    $run($term, $amount);
+}
+\fclose($input);
