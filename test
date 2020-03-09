@@ -1,0 +1,3 @@
+set -x;
+composer install;
+./vendor/bin/phpunit ./tests;
