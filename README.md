@@ -10,22 +10,24 @@ The default configuration uses the following configuration:
 $interpolator = new \Math\Interpolator\LinearInterpolator();
 
 // Default normalizer
-// It normalizes the final value, that value should be divisible by 5 without remainder
+// It normalizes the final fee, that fee + amount will be divisible by 5 without reminder
 $normalizer = new Math\Normalizer\DefaultNormalizer();
 
 // Default ranges for task, which match the provided task values.
 $ranges =[
     12 => [
-        1000 => .05,
-        2000 => .045,
-        3000 => .03,
-        4000 => .02875,
-        20000 => .02,
+        1000 => 50,
+        2000 => 90,
+        3000 => 90,
+        4000 => 115,
+        5000 => 100,
+        20000 => 400,
     ],
     24 => [
-        1000 => .07,
-        2000 => .05,
-        20000 => .04,
+        1000 => 70,
+        2000 => 100,
+        3000 => 120,
+        20000 => 800,
     ]];
 ?>
 
